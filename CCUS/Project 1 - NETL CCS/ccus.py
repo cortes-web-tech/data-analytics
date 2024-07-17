@@ -14,7 +14,7 @@ from matplotlib.animation import FuncAnimation
 f = open("output.txt", "w")
 f = open("output.txt", "a")
 
-df = pd.read_csv("ccs_jan_23.csv")
+df = pd.read_csv("ccus_sorted.csv")
 df.dropna()
 print("\nCCUS data loaded.")
 df = df.sort_values(by='Project Date')
@@ -38,11 +38,12 @@ world = world[~world['ADMIN'].isin(['Antarctica'])]
 ax = world.plot(color="#dddddd", edgecolor="black")
 
 x_vals = []
-y_vals = []
 index = 0
+y_vals = []
 latitudes = df['Latitude']
 longitude = df['Longitude']
 dates = df['Project Date']
+names = df['Project Name']
 
 
 def animate(i):
@@ -50,16 +51,19 @@ def animate(i):
     #   (dates[i], latitudes[i], longitude[i]))
     x_vals.append(longitude[i])
     y_vals.append(latitudes[i])
-    # plt.cla()
-    plt.plot(x_vals, y_vals, 'bo', color="#11ffff")
-    ax.set_xlabel(dates[i])
+    # plt.clf()
+    plt.plot(x_vals, y_vals, 'bo', color="#88ffcc")
+    plt.plot(longitude[i], latitudes[i], 'bo', color="#11abff")
+
+    label = dates[i] + "\n" + names[i]
+    ax.set_xlabel(label)
     # plt.legend()
 
 
 # gdf.plot(ax=ax, color="#bb5566")
 
 
-ani = FuncAnimation(plt.gcf(), animate, interval=300)
+ani = FuncAnimation(plt.gcf(), animate, interval=600)
 
 # usa = gdf[df['Country Location'] == 'United States']
 # australia = gdf[df['Country Location'] == 'Australia']
